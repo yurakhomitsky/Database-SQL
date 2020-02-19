@@ -1,0 +1,81 @@
+-- Країни, які мають вихід до Тихого океану
+Create view ocean_exit as
+select name_country as country,name_ocean as ocean
+from country inner join country_has_ocean on id_country=country_id_country
+inner join ocean on id_ocean=ocean_id_ocean
+where name_ocean='Тихий океан';
+select*from ocean_exit
+
+-- Які океани омивать регіони
+Create view ocean_region as
+select name_region as Land,array_to_string(array_accum(DISTINCT(name_ocean)),',') as ocean
+from mainland inner join regions on id_land=mainland_id_land 
+inner join country on id_regions=regions_id_regions inner join country_has_ocean on id_country=country_id_country
+inner join ocean on id_ocean=ocean_id_ocean
+group by name_region
+select*from ocean_region
+
+-- Представлення  зберігає інформацію про форми правління країн
+Create view forms_gov as
+select forms_of_government as forms,array_to_string(array_accum(DISTINCT(name_country)),',') as country,
+count(name_country) as count
+from country
+group by forms_of_government
+order by forms_of_government ASC
+
+select*from forms_gov
+																
+--  Представлення зберігає інформацію про материки
+Create view land_country as
+select name_land as land,array_to_string(array_accum(DISTINCT(name_region)),',') as regions,
+array_to_string(array_accum(DISTINCT(name_country)),',') as country
+from mainland inner join regions on id_land=mainland_id_land 
+inner join country on id_regions=regions_id_regions
+group by name_land
+order by name_land DESC
+select*from land_country
+
+-- Представлення,яке зберігає інформацію про список та кількість країн в організаціях
+create view org_country as
+select name_union as Організація,count(country_id_country) as "Кількість країн в організації",
+array_to_string(array_accum(DISTINCT(name_country)),',') AS "Список"
+        FROM country inner join country_in_organization on id_country=country_id_country 
+		inner join union_n on union_id=union_n_union_id
+        group by name_union
+		order by "Кількість країн в організації" DESC;
+							
+select*from org_country
+			
+-- Три основні типи країн							
+create view economico as
+select name_country as country,concat(vvp,'$') as VVP,
+	(CASE WHEN vvp>20000 THEN 'Економічно розвинута країна'
+             WHEN vvp>5000 and vvp<15000 THEN 'Середньо розвинута країна'
+             WHEN vvp<5000 THEN 'Країни,що розвиваються'
+             ELSE 'Середньо розвинута країна'
+       END) AS "Тип Країни"
+from country inner join economy on id_country=country_id_country
+where year=2002
+group by name_country,vvp
+order by vvp ASC;
+						
+select*from economico
+							
+-- Кількість країн,які омиває океан
+create view k_ocean as
+select name_ocean as "Океан",count(country_id_country) "Кількість країн"
+from ocean inner join country_has_ocean on 	id_ocean=ocean_id_ocean
+group by name_ocean
+order by "Кількість країн" DESC;
+select*from k_ocean
+							
+-- Найбільша країна в регіоні
+create view m_country as
+SELECT 
+   name_region AS "Регіон",
+    name_country AS "Країна",
+    concat(MAX(country.area),'  KM^2') AS "Площа"
+FROM mainland inner join regions on id_land=mainland_id_land 
+inner join country on id_regions=regions_id_regions
+GROUP BY name_region,name_country;
+select*from m_country

@@ -1,0 +1,138 @@
+-- Процедура,добавлення країни в організацію
+create procedure country_in_organization_procedure (countr_y varchar(40), organizatio_n varchar(60),Q varchar(1),INOUT Message varchar(300) default 'Процедура не виконалась')
+language 'plpgsql'
+as $$
+begin
+if countr_y in (select name_country from country) and organizatio_n	in (select name_union from union_n) and Q='+' then																						
+insert into country_in_organization (id_org,union_n_union_id,country_id_country,date_of_entry) values ((Select count(id_org) from  country_in_organization)+1,(select union_id from union_n where name_union=organizatio_n),(select id_country from country where name_country=countr_y),current_date);
+Select concat(countr_y,' вступила в ',organizatio_n) into Message;																		 
+elseif countr_y in (select name_country from country) and organizatio_n	in (select name_union from union_n) and Q='-' then
+UPDATE country_in_organization SET Date_of_release = current_date WHERE union_n_union_id=(select union_id from union_n where name_union=organizatio_n) and country_id_country=(select id_country from country where name_country=countr_y);
+Select concat(countr_y,' вийшла з ',organizatio_n) into Message;																			 
+end if;
+end																	  
+$$;		
+drop procedure country_in_organization_procedure;															  
+call country_in_organization_procedure ('ОАЕ','Всесвітня організація охорони здоров*я','-')	
+											
+-- Процедура добавлення мови в країну											
+create procedure language_in_country_procedure (languag_e varchar(40),countr_y varchar(40),Q varchar(1),INOUT Message varchar(300) default 'Процедура не виконалась')
+language 'plpgsql'
+as $$
+begin 	
+if languag_e in (select name_lang from language)	and countr_y in (select name_country from country) and Q='+' then	
+insert into language_in_country (id_lang_in_count,country_id_country,language_id_lang) values ((Select count(id_lang_in_count) from  language_in_country)+1,(select id_country from country where name_country=countr_y),(select id_lang from language where name_lang = languag_e));
+Select concat(countr_y,' отримала нову державну мову -  ',languag_e) into Message;		
+elseif languag_e in (select name_lang from language)	and countr_y in (select name_country from country) and Q='-' then
+delete from language_in_country where country_id_country=(select id_country from country where name_country=countr_y) and language=(select id_lang from language where name_lang=languag_e);	
+Select concat(countr_y,' більше не має такої державної мови як -  ',languag_e) into Message;																												 
+end if;																									
+end																	  
+$$;	
+																										 
+call language_in_country_procedure ('Китайська мова ','США','+')
+
+
+
+call Update_army_education_medicine('ALL',5,5,5,2002);
+-- Оновлення прайсу витрат на армію,мосвіту,медицину (ALL) - Оновити всім																		  
+create procedure Update_army_education_medicine (countr_y varchar(40),army int,education int,medicine int,yea_r int,INOUT Message varchar(300) default 'Процедура не виконалась')
+language 'plpgsql'																									 
+as $$
+begin 	
+if countr_y in (select name_country from country) and yea_r in (select distinct(year) from economy)	then
+UPDATE economy SET cost_of_army = cost_of_army+army WHERE country = (select id_country from country where name_country=countr_y) and year=yea_r; 
+UPDATE economy SET cost_of_education = cost_of_education+education WHERE country = (select id_country from country where name_countrycountr_y) and year=yea_r;
+UPDATE economy SET cost_of_medicine = cost_of_medicine+medicine WHERE country = (select id_country from country where name_country=countr_y) and year=yea_r;
+select concat(countr_y,
+			  '. Витрати на освіту ',
+			 (select cost_of_army from economy where country=(select id_country from country where name_country=countr_y) and year=yea_r),
+			  ' MILION $. Витрати на освіту ',
+			 (select cost_of_education from economy where country=(select id_country from country where name_country=countr_y) and year=yea_r),
+			  ' MILION $. Витрати на медицину ',
+			 (select cost_of_medicine from economy where country=(select id_country from country where name_country=countr_y) and year=yea_r),
+			  ' MILION $. за ',
+			  yea_r,
+		      'рік') into Message;
+elseif countr_y='ALL' and yea_r in (select distinct(year) from economy)	 then
+UPDATE economy SET cost_of_army = cost_of_army+army WHERE  year=yea_r; 
+UPDATE economy SET cost_of_education = cost_of_education+education WHERE year=yea_r;
+UPDATE economy SET cost_of_medicine = cost_of_medicine+medicine WHERE  year=yea_r;	
+select concat('Оновлено витрати на армію,освіту та медицину всім країнам у базі даних за ',yea_r,'рік') into Message;																										 
+end if;																										 
+end																	  
+$$;		
+	
+
+create procedure Update_time_zone (capital_n varchar(40),time_z varchar(50),INOUT Message varchar(300) default 'Процедура не виконалась')
+language 'plpgsql'																									 
+as $$
+begin 	
+if capital_n in (select name_capital from capital) and time_z in (select name_zone from time_zone)	
+then
+UPDATE capital_in_time_zone SET time_zone_id_zone = (select id_zone from time_zone where name_zone=time_z) WHERE capital_id_capital = (select id_capital from capital where name_capital=capital_n);
+select concat('Нова часова зона для  ',capital_n,'  є  ',time_z)
+into Message;																									 
+end if;																										 
+end																	  
+$$;
+call update_time_zone('Абу-Дабі','UTC+4')
+drop procedure update_time_zone
+
+
+create procedure Update_President (country_y varchar(40),president_y varchar(50),INOUT Message varchar(300) default 'Процедура не виконалась')
+language 'plpgsql'																									 
+as $$
+begin 	
+if country_y in (select name_country from country) 
+then
+UPDATE country set president=president_y where name_country=country_y;
+select concat('Новий президеннт країни   ',country_y,'  є  ',president_y)
+into Message;																									 
+end if;																										 
+end																	  
+$$;
+call Update_President('Росія','Миколай Соболев')
+
+
+create or replace procedure proc4()
+language plpgsql
+as
+$BODY$
+DECLARE i int DEFAULT 1;
+    ennd int;
+    date_of_entry1 date;
+    date_of_release1 date;
+	name_country1 varchar(60);
+    name_union1 varchar(80);
+    coment varchar(80);
+    curs CURSOR FOR SELECT date_of_entry,date_of_release,name_country,name_union,CONCAT('Вийшла з організації,перебувала - ',
+     EXTRACT(YEAR from date_of_release) - EXTRACT(YEAR from date_of_entry),' років') FROM
+    country
+        INNER JOIN
+    country_in_organization ON id_country = country_id_country
+        INNER JOIN
+    union_n ON union_id = union_n_union_id
+	WHERE EXTRACT(YEAR from date_of_release) = 2019;
+BEGIN
+  ennd:= (SELECT COUNT(id_org) FROM country_in_organization WHERE EXTRACT(YEAR from date_of_release) = 2019)+1;
+  OPEN curs;
+  loop
+  exit when i = ennd;
+  FETCH curs INTO date_of_entry1, date_of_release1, name_country1, name_union1, coment;
+  INSERT INTO archive VALUES (date_of_entry1, date_of_release1, name_country1, name_union1, coment);
+  DELETE FROM country_in_organization WHERE id_org = 0;
+  i:= i+1;
+  end loop;
+  CLOSE curs;
+END;
+$BODY$
+drop procedure proc4()
+call proc4()
+select*from archive
+CREATE TABLE archive(
+  date_of_entry date,
+  date_of_release date,
+  name_country varchar(80),
+  name_union varchar(80),
+  coment varchar(80));

@@ -1,0 +1,136 @@
+
+create or replace function info_country(name_one varchar(100),name_two varchar(100),year_c int)
+returns Table (
+	"Країна" varchar(100),
+	"Площа" int,
+	"Форма правління" forms,
+	"Населення" int,
+     "ВВП" decimal(9,1),
+	"Місце у Рейтингу ВВП" int,
+	"Тип країни" varchar(150),
+	"Часова зона" varchar(50),
+	"Регіон" varchar (100),
+	"Материк" varchar(50)
+	
+)
+AS $$
+BEGIN 
+	if name_one in (SELECT name_country FROM country) and name_two in (SELECT name_country FROM country)
+	and year_c in (Select year from economy )then
+ RETURN QUERY 
+	   select name_country,country.area,forms_of_government,country.population,vvp,place_vvp(name_country,year_c),vvp_check2(name_country),name_zone,
+	   name_region,name_land
+	   FROM time_zone
+            JOIN
+        capital_in_time_zone ON id_zone = time_zone_id_zone
+            JOIN
+        capital ON id_capital = capital_id_capital
+            JOIN
+        country ON id_capital = country.capital_id_capital
+			JOIN 
+		regions on id_regions=regions_id_regions
+			JOIN mainland 
+			on id_land=mainland_id_land
+			JOIN economy on id_country=economy.country_id_country
+where name_country=name_one and year=year_c or name_country=name_two and year=year_c
+group by name_country,country.area,forms_of_government,country.population,vvp,name_zone,name_region,name_land
+	   union all
+	   select 'Різниця ',max(area)-min(area),'-',max(population)-min(population),max(vvp)-min(vvp),null,' ',CAST(sub(name_one,name_two)as varchar(50)),
+	   ' ',' '
+from country innner join economy on id_country=country_id_country
+	where name_country=name_one and year=year_c or name_country=name_two and year=year_c
+limit 3;																					  
+	end if;																				  
+END;$$
+LANGUAGE 'plpgsql';
+												 
+drop function info_country
+SELECT *from info_country('Україна','Австралія',2002);
+
+CREATE OR REPLACE FUNCTION place_vvp (Countr_y varchar(50),year_y int) RETURNS int as
+$$ DECLARE Q int default null;
+begin
+if Countr_y in (SELECT name_country FROM country) 
+and year_y in (select year from economy ) then
+WITH placevvp AS 
+( 
+	select name_country as country,vvp as vvp,row_number() over (order by economy.VVP DESC) as place
+	FROM
+    economy
+        JOIN
+    country ON id_country = country_id_country
+    WHERE   year=year_y 
+ORDER BY economy.VVP DESC
+) 
+select place from placevvp 
+where country=Countr_y
+   INTO Q;
+else 
+SELECT 'Немає інформації' INTO Q;
+end if;
+return Q;
+END  
+$$ LANGUAGE 'plpgsql';
+
+drop function place_vvp
+
+CREATE OR REPLACE FUNCTION sub(Countr_y varchar(50),country_two varchar(50)) RETURNS interval as
+$$ DECLARE QQQ varchar(200) default null;
+begin
+if Countr_y in (select name_country from country) and country_two in (select name_country from country) then 
+SELECT 
+    time-(select time from time_zone
+            JOIN
+        capital_in_time_zone ON id_zone = time_zone_id_zone
+            JOIN
+        capital ON id_capital = capital_id_capital
+            JOIN
+        country ON id_capital = country.capital_id_capital
+			JOIN 
+		regions on id_regions=regions_id_regions
+        where name_country=Countr_y
+        ) as Різниця
+ INTO QQQ from  time_zone
+            JOIN
+        capital_in_time_zone ON id_zone = time_zone_id_zone
+            JOIN
+        capital ON id_capital = capital_id_capital
+            JOIN
+        country ON id_capital = country.capital_id_capital
+			JOIN 
+		regions on id_regions=regions_id_regions
+WHERE
+    name_country = country_two;
+else 
+SELECT 'Таких країн не існує в базі' INTO QQQ;
+end if;
+return QQQ;
+END  
+$$ LANGUAGE 'plpgsql';
+drop function sub;
+SELECT sub('Україна','Австралія' ) AS "Різниця в часі"											 
+																   
+CREATE OR REPLACE FUNCTION vvp_check2 (Countr_y varchar(50)) RETURNS varchar(50) as
+$$ DECLARE QQQ varchar(150) default null;
+BEGIN
+if Countr_y in (SELECT name_country FROM country) then
+SELECT 
+  CASE WHEN vvp>20000 THEN 'Економічно розвинута країна'
+             WHEN vvp>5000 and vvp<15000 THEN 'Середньо розвинута країна'
+             WHEN vvp<5000 THEN 'Країна,що розвиваються'
+             ELSE 'Економічно розвинута країна'
+       END
+INTO QQQ FROM
+    economy
+        JOIN
+    country ON country.id_country = economy.country_id_country
+WHERE
+    country.name_country =Countr_y 
+	   group by vvp;
+else 
+SELECT 'Немає інформації' INTO QQQ;
+end if;
+return QQQ;
+END  
+$$ LANGUAGE 'plpgsql';	
+													

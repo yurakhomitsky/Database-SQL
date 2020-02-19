@@ -1,0 +1,119 @@
+SELECT column_name, data_type 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE table_name = 'language_in_country';
+
+
+-- Різниця доходу Країни за минулий рік
+WITH monthly_data AS 
+( 
+	SELECT year as year,id_country as id,name_country as Країна ,id_economy as economy,
+	price_export as "Дохід цього року"
+	FROM country inner join economy on id_country=country_id_country
+	GROUP BY year,id_country,name_country,price_export,id_economy
+) 
+SELECT year,Країна, CONCAT(CAST("Дохід цього року" as DECIMAL(9,1)),' Milion $') as "Дохід поточного року",
+"Дохід цього року" - lag("Дохід цього року",17)  OVER (ORDER BY economy)  as "Різниця доходу за минулий рік"
+FROM monthly_data
+ORDER BY economy ASC;
+
+-- Регіони в яких прибуток більший за AVG в(2002 рік)	
+WITH regional_export AS (
+    SELECT year as year,name_region as region, SUM(price_export) AS total_sales
+     FROM
+   economy
+        JOIN
+    country ON id_country = economy.country_id_country
+        JOIN
+    regions on id_regions=regions_id_regions
+	where year=2002
+    GROUP BY name_region,year
+   ),top_regions AS (
+    SELECT region
+    FROM regional_export
+    WHERE total_sales > (SELECT avg(total_sales) FROM regional_export) and year=2002 
+   )
+SELECT name_region,
+ CONCAT( CAST(SUM(price_export) as DECIMAL(9,1)),' Milion $') AS product_sales
+FROM
+   economy
+        JOIN
+    country ON id_country = economy.country_id_country
+        JOIN
+    regions on id_regions=regions_id_regions
+WHERE name_region IN (SELECT region FROM top_regions) and year=2002
+GROUP BY name_region;
+
+		
+-- Країни,де кількість міст більше 40
+Select name_country as Country,area as Area,
+forms_of_government as Government,president as President,c_city as City
+from country
+where c_city>40
+Order by City DESC;
+
+create aggregate array_accum (
+sfunc = array_append,
+basetype = anyelement,
+stype = anyarray,
+initcond = '{}'
+);
+
+-- Топ 5  Регіонів з найбільшим населенням
+Select name_region as "Регіон", array_to_string(array_accum(DISTINCT(name_country)),',') as "Країни",
+sum(country.population) as "Населення"
+from mainland inner join regions on id_land=mainland_id_land 
+inner join country on id_regions=regions_id_regions
+group by name_region
+order by "Населення" DESC
+limit 5;
+
+-- Коментар про розмір організацій														  
+SELECT name_union, 
+       (CASE WHEN count(country_id_country)>=4 THEN 'Велика організація'
+             WHEN count(country_id_country)<4 and count(country_id_country)>2 THEN 'Середня організація'
+             WHEN count(country_id_country)<3 THEN 'Мала організація'
+             ELSE 'Немає'
+       END) AS "Статус"
+FROM country inner join country_in_organization on id_country=country_id_country inner join union_n on union_id=union_n_union_id
+        group by name_union;
+
+-- Країни у яких говорять на англійській
+Select name_country as Country
+from country inner join language_in_country on id_country=country_id_country 
+inner join language on id_lang=language_id_lang
+where language_cod='ENG'
+Order by name_country DESC;
+
+-- Вступлення країн в організацію протягом заданого проміжку
+select concat(name_country,' вступила в організацію <<',name_union,'>> у ',country_in_organization.date_of_entry)
+FROM country inner join country_in_organization on id_country=country_id_country 
+inner join union_n on union_id=union_n_union_id 
+where country_in_organization.date_of_entry between '1990-01-01' and '1999-12-31'
+		
+-- Топ 5 країн з за 2002 рік по ВВП
+select year as year,name_country as country,vvp as vvp
+from country inner join economy on id_country=country_id_country
+where year=2002
+ORDER BY vvp DESC
+limit 5;	
+
+-- Країни,які входять в 3 найбільші організацї
+select name_union as Union, array_to_string(array_accum(DISTINCT(name_country)),',') as country,
+count(country_id_country) as "Кількість"
+FROM country inner join country_in_organization on id_country=country_id_country 
+inner join union_n on union_id=union_n_union_id 	
+group by name_union
+order by "Кількість" desc
+limit 3;		
+
+-- Країни в часовій зоні UTC+2
+select array_to_string(array_accum(DISTINCT(name_country)),',') as country,name_zone as timezone
+from time_zone
+            JOIN
+        capital_in_time_zone ON id_zone = time_zone_id_zone
+            JOIN
+        capital ON id_capital = capital_id_capital
+            JOIN
+        country ON id_capital = country.capital_id_capital
+Where name_zone='UTC+2'
+group by name_zone;				  

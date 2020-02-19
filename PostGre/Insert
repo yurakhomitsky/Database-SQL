@@ -1,0 +1,379 @@
+﻿INSERT INTO capital VALUES (1,'Абу-Дабі', 972.1, 1206000, 'Халіфа Бін Заїд');
+INSERT INTO capital VALUES (2,'Москва', 2511.0, 11990000, 'Собянін Сергій');
+INSERT INTO capital VALUES (3,'Лондон', 1572.2, 8136000, 'Садік Хан');
+INSERT INTO capital VALUES (4,'Київ', 1200.8, 2884000, 'Віталій Кличко');
+INSERT INTO capital VALUES (5,'Варшава', 517.4, 1745000, 'Рафал Тжасковський');
+INSERT INTO capital VALUES (6,'Вашингтон', 177.2, 693000, 'Муріел Боузер');
+INSERT INTO capital VALUES (7,'Канберра', 814.0, 356585, 'Ерік Хаус');
+INSERT INTO capital VALUES (8,'Кейптаун', 154.9, 433688, 'Патрісія де Ліль');
+INSERT INTO capital VALUES (9,'Каїр', 528.3, 19000000, 'Эль-Кахира');
+INSERT INTO capital VALUES (10,'Пекін', 16808.7, 21710000, 'Чен Чінінг');
+INSERT INTO capital VALUES (11,'Токіо', 2188.0, 9273000, 'Юріко Коіке');
+INSERT INTO capital VALUES (12,'Мадрид', 604.2, 3166000, 'Мануела Кармен');
+INSERT INTO capital VALUES (13,'Париж', 105.1, 2200000, 'Анн Ідальго');
+INSERT INTO capital VALUES (14,'Берлін', 891.3, 1136000, 'Міхаель Мюллер');
+INSERT INTO capital VALUES (15,'Бразиліа', 5780.3, 2481000, 'Еліо де Олівейра Сантус');
+INSERT INTO capital VALUES (16,'Торонто', 630.2, 2731000, 'Джон Торі');
+INSERT INTO capital VALUES (17,'Буенос-Айрес', 203, 2890000, 'Гарісон Родрігес');
+
+INSERT INTO mainland VALUES (1,'Євразія',54760000,461800000);
+INSERT INTO mainland VALUES (2,'Америка',24710000,579000000);
+INSERT INTO mainland VALUES (3,'Африка',30370000,1216000000);
+INSERT INTO mainland VALUES (4,'Антарктида',14000000,0);
+
+INSERT INTO ocean VALUES (1,'Атлантичний океан',91000000,3600);
+INSERT INTO ocean VALUES (2,'Індійський океан',7300000,3890);
+INSERT INTO ocean VALUES (3,'Північний Льодовитий океан',1470000,1225);
+INSERT INTO ocean VALUES (4,'Тихий океан',1680000,4280);
+INSERT INTO ocean VALUES (5,'Південний океан',200000,4500);
+
+create type Forms as ENUM ('Президентська','Парламентська','Абсолютна','Конституційна')
+
+INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (16, 4, 2);
+
+	select*from country_has_ocean;
+	
+INSERT INTO country VALUES (1,'ОАЕ',83600,'1971-12-02','Абсолютна','Дирхам','Насір ель Ахлі','Саїд Джара',9400000,1,5,'+971');
+INSERT INTO country VALUES (2,'Росія',17100000,'1990-6-12','Парламентська','Рубль','Володимир Путін','Дмитро Медведєв',144500000,2,8,'+7');
+INSERT INTO country VALUES (3,'Велика британія',242495,'1922-03-12','Конституційна','Фунт стерлінгів','Єлизавета II','Тереза Мей',66020000,3,2,'+44');
+INSERT INTO country VALUES (4,'Україна',603628,'1991-8-21','Парламентська','Гривня','Володимир Зеленський','Гройсман',44830000,4,4,'+380');
+INSERT INTO country VALUES (5,'Польща',312679,'1918-11-11','Абсолютна','Злотий','Аджей Дуда','Роберт Левандовські',37970000,5,4,'+48');
+INSERT INTO country VALUES (6,'США',9826675,'1776-7-4','Конституційна','Американський долар','Дональд Трамп','Майк Пенс',325719178,6,16,'+1');
+INSERT INTO country VALUES (7,'Австралія',7686850,'1901-1-1','Президентська','Австралійський долар','Єлизавета II','Скотт Моррісон',21507717,7,19,'+61');
+INSERT INTO country VALUES (8,'Південно-Африка́нська Респу́бліка',1221037,'1961-5-6','Президентська','Ранд','Матамела Сиріл Рамафоса',NULL,50586757,8,15,'+27');
+INSERT INTO country VALUES (9,'Єгипет',1001450,'1922-2-28','Парламентська','Єгипетський фунт','Абдель Фаттах Ас-Сісі',NULL,92658900,9,16,'+20');
+INSERT INTO country VALUES (10,'Китай',9597000,' 1949-03-1','Президентська','Юань Женьміньбі','Сі Цзіньпін',NULL,1386000000,10,9,'+61');
+INSERT INTO country VALUES (11,'Японія',377972,'1947-5-3','Парламентська','Єна','Його величність Акіхіто',NULL,127110047,11,9,'+81');
+INSERT INTO country VALUES (12,'Іспанія',504645,'1714-08-9','Парламентська','Євро','Філіп VI','Педро Санчес',45200737,12,3,'+34');
+INSERT INTO country VALUES (13,'Франція',551595,'874-02-2','Абсолютна','Євро','Еммануель Макрон','Едуар Філіпп',66842134,13,1,'+33');
+INSERT INTO country VALUES (14,'Німеччина',357386,'1918-04-11','Парламентська','Євро','Франк-Вальтер Штайнмаєр','Ангела Меркель',2887000,14,18,'+49');
+INSERT INTO country VALUES (15,'Бразилія',8515767,'1825-8-29','Конституційна','Реал','Жаїр Болсонару','Амілтон Моуран',210147125,15,19,'+55');
+INSERT INTO country VALUES (16,'Канада',9984670,'1867-7-1','Парламентська','Канадський долар','Єлизавета II','Джастін Трюдо',37067011,16,16,'+1');
+INSERT INTO country VALUES (17,'Аргентина',2766890,'1810-5-25','Президентська','Аргентинський песо','Маурісіо Макрі','Габріела Мікетті',40117096,17,19,'+54');
+
+
+INSERT INTO union_n VALUES (1,'Всесвітня організація охорони здоров*я','ВООЗ','1948-4-7','Женева','Tedros Adhanom Ghebreyesus');
+INSERT INTO union_n VALUES (2,'Міжнаро́дна аге́нція з а́томної ене́ргії','МАГАТЕ ','1957-2-25','Відень','Амано Юкія');
+INSERT INTO union_n VALUES (3,'Міжнародна організація праці','МОП ','1919-12-12','Женева','Hans Böckler Preis');
+INSERT INTO union_n VALUES (4,'Організація з безпеки і співробітництва в Європі','ОБСЄ','1975-3-17','Венна',NULL);
+INSERT INTO union_n VALUES (5,'Рада Європи','РЄ','1949-03-20','Страсбург','Едмонд Панаріті');
+INSERT INTO union_n VALUES (6,'Організа́ція Об*є́днаних На́цій з пита́нь осві́ти, нау́ки і культу́ри','ЮНЕСКО','1945-11-16','Place de Fontenoy у Парижі','Одрі Азулай');
+INSERT INTO union_n VALUES (7,'Всесвітня організація інтелектуальної власності','ВОІВ','1967-1-13','Женева',NULL);
+INSERT INTO union_n VALUES (8,'Організація Об*єднаних Націй','ООН','1945-12-29','Нью-Йорк','Антоніу Гутерреш');
+INSERT INTO union_n VALUES (9,'Європейський Союз','ЄС','1993-11-1','Брюсель','Жан-Клод Юнкер');
+INSERT INTO union_n VALUES (10,'Організа́ція Північноатланти́чного до́говору, також Північноатланти́чний алья́нс','НАТО','1949-4-4','Брюсель','Єнс Столтенберг');
+
+
+INSERT INTO language VALUES (1,'Англійська мова',1500000000,53,'ENG');
+INSERT INTO language VALUES (2,'Німецька мова',142000000,7,'GER');
+INSERT INTO language VALUES (3,'Іспанська мова ',437000000 ,23,'SPA');
+INSERT INTO language VALUES (4,'Французька мова ',7680000,53,'FRA');
+INSERT INTO language VALUES (5,'Російська мова ',154000000,22,'RUS');
+INSERT INTO language VALUES (6,'Українська мова ',34710100,1,'UKR');
+INSERT INTO language VALUES (7,'Китайська мова ',1200000000,4,'ZHO');
+INSERT INTO language VALUES (8,'Японська мова ',130000000,1,'JPN');
+INSERT INTO language VALUES (9,'Польська мова ',38000000,2,'POL');
+INSERT INTO language VALUES (10,'Португальська мова ',220000000,10,'POR');
+INSERT INTO language VALUES (11,'Арабська мова ',270000000,NULL,'ARA');
+
+INSERT INTO regions VALUES ('1', 'Західна Європа', '15000000', '29600000', '1');
+INSERT INTO regions VALUES ('2', 'Північна Європа', '143300', '2700000', '1');
+INSERT INTO regions VALUES ('3', 'Південна Європа', '15000000', '16000000', '1');
+INSERT INTO regions VALUES ('4', 'Східна Європа', '23000000', '13500000', '1');
+INSERT INTO regions VALUES ('5', 'Західна Азія', '2823000', '4100000', '1');
+INSERT INTO regions VALUES ('6', 'Центральна Азія', '3882000', '5300000', '1');
+INSERT INTO regions VALUES ('7', 'Південна Азія', '4800000', '21000000', '1');
+INSERT INTO regions VALUES ('8', 'Північна Азія', '17075200', '14450000', '1');
+INSERT INTO regions VALUES ('9', 'Східна Азія', '11839074', '161800000', '1');
+INSERT INTO regions VALUES ('10', 'Південно-Східна Азія', '4500000', '59900000', '1');
+INSERT INTO regions VALUES ('11', 'Північна Африка', '10000000', '313000000', '4');
+INSERT INTO regions VALUES ('12', 'Західна Африка', '5100000', '210000000', '4');
+INSERT INTO regions VALUES ('13', 'Центральна Африка', '7300000', '9400000', '4');
+INSERT INTO regions VALUES ('14', 'Східна Африка', '7700000', '194000000', '4');
+INSERT INTO regions VALUES ('15', 'Південна Африка', '1220000', '10000000', '4');
+INSERT INTO regions VALUES ('16', 'Північна Америка', '24710000', '579000000', '3');
+INSERT INTO regions VALUES ('17', 'Центральна Америка', '35700000', '210000000', '3');
+INSERT INTO regions VALUES ('18', 'Карибський басейн', '244890', '42000000', '3');
+INSERT INTO regions VALUES ('19', 'Південна Америка', '17840000', '422000000', '3');
+select*from regions;
+
+
+INSERT INTO time_zone (id_zone,name_zone) VALUES (1,'UTC-12');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (2,'UTC-11');
+INSERT INTO time_zone (id_zone,name_zone)VALUES (3,'UTC-10');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (4,'UTC-9:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (5,'UTC-9');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (6,'UTC-8');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (7,'UTC-7');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (8,'UTC-6');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (9,'UTC-5');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (10,'UTC-4');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (11,'UTC-3:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (12,'UTC-3');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (13,'UTC-2');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (14,'UTC-1');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (15,'UTC+0');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (16,'UTC+1');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (17,'UTC+2');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (18,'UTC+3');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (19,'UTC+3:30');
+INSERT INTO time_zone (id_zone,name_zone)VALUES (20,'UTC+4');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (21,'UTC+4:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (22,'UTC+5');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (23,'UTC+5:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (24,'UTC+5:45');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (25,'UTC+6');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (26,'UTC+6:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (27,'UTC+7');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (28,'UTC+8');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (29,'UTC+8:45');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (30,'UTC+9');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (31,'UTC+9:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (32,'UTC+10');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (33,'UTC+10:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (34,'UTC+11');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (35,'UTC+11:30');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (36,'UTC+12');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (37,'UTC+12:45');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (38,'UTC+13');
+INSERT INTO time_zone (id_zone,name_zone) VALUES (39,'UTC+14');
+    
+	select*from time_zone
+UPDATE time_zone SET Time = '-12:00:00' WHERE (id_zone = '1');    
+UPDATE time_zone SET Time = '-11:00:00' WHERE (id_zone = '2');   
+UPDATE time_zone SET Time = '-10:00:00' WHERE (id_zone = '3');
+UPDATE time_zone SET Time = '-9:30:00' WHERE (id_zone = '4');  
+UPDATE time_zone SET Time = '-9:00:00' WHERE (id_zone = '5'); 
+UPDATE time_zone SET Time = '-8:00:00' WHERE (id_zone = '6'); 
+UPDATE time_zone SET Time = '-7:00:00' WHERE (id_zone = '7'); 
+UPDATE time_zone SET Time = '-6:00:00' WHERE (id_zone = '8'); 
+UPDATE time_zone SET Time = '-5:00:00' WHERE (id_zone = '9'); 
+UPDATE time_zone SET Time = '-4:00:00' WHERE (id_zone = '10'); 
+UPDATE time_zone SET Time = '-3:30:00' WHERE (id_zone = '11');
+UPDATE time_zone SET Time = '-3:00:00' WHERE (id_zone = '12');
+UPDATE time_zone SET Time = '-2:00:00' WHERE (id_zone = '13');  
+UPDATE time_zone SET Time = '-1:00:00' WHERE (id_zone = '14');  
+UPDATE time_zone SET Time = '00:00:00' WHERE (id_zone = '15'); 
+UPDATE time_zone SET Time = '1:00:00' WHERE (id_zone = '16'); 
+UPDATE time_zone SET Time = '2:00:00' WHERE (id_zone = '17'); 
+UPDATE time_zone SET Time = '3:00:00' WHERE (id_zone = '18'); 
+UPDATE time_zone SET Time = '3:30:00' WHERE (id_zone = '19'); 
+UPDATE time_zone SET Time = '4:00:00' WHERE (id_zone = '20'); 
+UPDATE time_zone SET Time = '4:30:00' WHERE (id_zone = '21'); 
+UPDATE time_zone SET Time = '5:00:00' WHERE (id_zone = '22'); 
+UPDATE time_zone SET Time = '5:30:00' WHERE (id_zone = '23'); 
+UPDATE time_zone SET Time = '5:45:00' WHERE (id_zone = '24'); 
+UPDATE time_zone SET Time = '6:00:00' WHERE (id_zone = '25'); 
+UPDATE time_zone SET Time = '6:30:00' WHERE (id_zone = '26'); 
+UPDATE time_zone SET Time = '7:00:00' WHERE (id_zone = '27'); 
+UPDATE time_zone SET Time = '8:00:00' WHERE (id_zone = '28'); 
+UPDATE time_zone SET Time = '8:45:00' WHERE (id_zone = '29'); 
+UPDATE time_zone SET Time = '9:00:00' WHERE (id_zone = '30'); 
+UPDATE time_zone SET Time = '9:30:00' WHERE (id_zone = '31');
+UPDATE time_zone SET Time = '10:00:00' WHERE (id_zone = '32'); 
+UPDATE time_zone SET Time = '10:30:00' WHERE (id_zone = '33'); 
+UPDATE time_zone SET Time = '11:00:00' WHERE (id_zone = '34');  
+UPDATE time_zone SET Time = '11:30:00' WHERE (id_zone = '35');
+UPDATE time_zone SET Time = '12:00:00' WHERE (id_zone = '36');
+UPDATE time_zone SET Time = '12:45:00' WHERE (id_zone = '37');
+UPDATE time_zone SET Time = '13:00:00' WHERE (id_zone = '38'); 
+UPDATE time_zone SET Time = '14:00:00' WHERE (id_zone = '39');
+
+
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (1,1,20);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (2,2,18);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (3,3,15);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (4,4,17);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (5,5,16);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (6,6,9);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (7,7,34);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (8,8,17);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (9,9,17);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (10,10,28);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (11,11,30);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (12,12,16);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (13,13,16);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (14,14,16);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (15,15,10);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (16,16,9);
+INSERT INTO сapital_in_time_zone (id_time_zone,capital_id_capital,time_zone_id_zone) VALUES (17,17,12);
+
+
+INSERT INTO language_in_country VALUES (1,1,11);
+INSERT INTO language_in_country VALUES (2,2,5);
+INSERT INTO language_in_country VALUES (3,3,1);
+INSERT INTO language_in_country VALUES (4,4,6);
+INSERT INTO language_in_country VALUES (5,5,9);
+INSERT INTO language_in_country VALUES (6,6,1);
+INSERT INTO language_in_country VALUES (7,6,3);
+INSERT INTO language_in_country VALUES (8,6,4);
+INSERT INTO language_in_country VALUES (9,7,1);
+INSERT INTO language_in_country VALUES (10,8,1);
+INSERT INTO language_in_country VALUES (11,9,11);
+INSERT INTO language_in_country VALUES (12,10,7);
+INSERT INTO language_in_country VALUES (13,11,8);
+INSERT INTO language_in_country VALUES (14,12,3);
+INSERT INTO language_in_country VALUES (15,12,10);
+INSERT INTO language_in_country VALUES (16,13,4);
+INSERT INTO language_in_country VALUES (17,14,2);
+INSERT INTO language_in_country VALUES (18,15,10);
+INSERT INTO language_in_country VALUES (19,16,1);
+INSERT INTO language_in_country VALUES (20,16,4);
+INSERT INTO language_in_country VALUES (21,17,3);
+
+INSERT INTO country_in_organization VALUES (1,'1958-12-4',NULL,1,1);
+INSERT INTO country_in_organization VALUES (2,'1974-2-12',NULL,2,2);
+INSERT INTO country_in_organization VALUES (3,'1989-4-23',NULL,3,3);
+INSERT INTO country_in_organization VALUES (4,'1986-12-12',NULL,4,4);
+INSERT INTO country_in_organization VALUES (5,'2004-11-22',NULL,5,5);
+INSERT INTO country_in_organization VALUES (6,'1999-4-2',NULL,6,6);
+INSERT INTO country_in_organization VALUES (7,'1977-7-12',NULL,7,7);
+INSERT INTO country_in_organization VALUES (8,'1995-8-8',NULL,8,8);
+INSERT INTO country_in_organization VALUES (9,'1999-12-12',NULL,9,9);
+INSERT INTO country_in_organization VALUES (10,'2001-11-2',NULL,10,10);
+INSERT INTO country_in_organization VALUES (11,'1979-7-12',NULL,1,11);
+INSERT INTO country_in_organization VALUES (12,'1959-12-19','1962-12-19',2,12);
+INSERT INTO country_in_organization VALUES (13,'1995-2-18',NULL,3,13);
+INSERT INTO country_in_organization VALUES (14,'1999-1-17',NULL,4,14);
+INSERT INTO country_in_organization VALUES (15,'1994-12-1',NULL,5,15);
+INSERT INTO country_in_organization VALUES (16,'1969-11-2',NULL,6,16);
+INSERT INTO country_in_organization VALUES (17,'1991-10-22',NULL,7,17);
+INSERT INTO country_in_organization VALUES (18,'1958-12-4','1991-10-22',10,1);
+INSERT INTO country_in_organization VALUES (19,'1974-2-12',NULL,9,2);
+INSERT INTO country_in_organization VALUES (20,'1989-4-23',NULL,8,3);
+INSERT INTO country_in_organization VALUES (21,'1986-12-12','1995-8-8',7,4);
+INSERT INTO country_in_organization VALUES (22,'2004-11-22',NULL,2,5);
+INSERT INTO country_in_organization VALUES (23,'1999-4-2',NULL,5,6);
+INSERT INTO country_in_organization VALUES (24,'1977-7-12',NULL,4,7);
+INSERT INTO country_in_organization VALUES (25,'1995-8-8',NULL,3,8);
+INSERT INTO country_in_organization VALUES (26,'1999-12-12',NULL,2,9);
+INSERT INTO country_in_organization VALUES (27,'2001-11-2',NULL,1,10);
+INSERT INTO country_in_organization VALUES (28,'1979-7-12',NULL,10,11);
+INSERT INTO country_in_organization VALUES (29,'1959-12-19','1962-12-19',9,12);
+INSERT INTO country_in_organization VALUES (30,'1995-2-18',NULL,8,13);
+INSERT INTO country_in_organization VALUES (31,'1999-1-17',NULL,7,14);
+INSERT INTO country_in_organization VALUES (32,'1994-12-1',NULL,6,15);
+INSERT INTO country_in_organization VALUES (33,'1969-11-2',NULL,5,16);
+INSERT INTO country_in_organization VALUES (34,'1991-10-22',NULL,2,17);
+
+
+
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES  (1,13000,1,30,30,1000,500,2000,1);
+
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (2,4000,100,10,70,300,650,2000,2);
+
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (3,26000,50,50,90,80,40,2000,3);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (4,4500,400,17,120,10,340,2000,4);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (5,14000,10,300,450,245,1,2000,5);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (6,60000,700,800,560,1000,670,2000,6);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (7,35000,30,345,400,300,250,2000,7);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (8,6000,150,10,10,300,1000,2000,8);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (9,23000,10,350,1000,560,470,2000,9);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (10,18000,100,345,560,1500,900,2000,10);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (11,27000,14,750,440,700,560,2000,11);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (12,32000,50,150,300,300,150,2000,12);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (13,50000,400,670,750,500,300,2000,13);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (14,45000,300,600,750,100,600,2000,14);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (15,15000,10,80,100,150,400,2000,15);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (16,70000,10,1000,900,100,5,2000,16);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (17,13000,10,50,100,300,450,2000,17);
+
+
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES  (18,13000,1,30,30,800,540,2001,1);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (19,4000,100,10,70,240,420,2001,2);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (20,11100,40,34,96,800,463,2001,3);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (21,3500,210,170,220,10,256,2001,4);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (22,8000,340,30,480,245,180,2001,5);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (23,6320,530,400,760,103,270,2001,6);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (24,21012,21,345,200,125,250,2001,7);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (25,1200,150,100,30,700,100,2001,8);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (26,8715,210,380,100,660,470,2001,9);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (27,5220,30,715,520,150,300,2001,10);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (28,4022,80,550,380,700,520,2001,11);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (29,3035,10,40,290,300,150,2001,12);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (30,3156,250,770,720,500,335,2001,13);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (31,3235,330,300,650,152,380,2001,14);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (32,1997,139,830,170,140,400,2001,15);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (33,1689,70,100,930,100,57,2001,16);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (34,13000,245,80,135,350,450,2001,17);
+
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (35,15000,101,70,40,700,540,2002,1);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (36,3800,100,20,30,240,420,2002,2);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (37,9100,40,34,96,800,463,2002,3);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (38,5500,110,150,220,106,256,2002,4);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (39,7800,140,30,480,245,180,2002,5);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (40,7320,330,600,760,503,270,2002,6);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (41,18010,11,45,200,325,250,2002,7);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (42,2200,130,210,30,600,100,2002,8);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (43,9715,110,280,100,660,470,2002,9);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (44,2220,70,415,520,150,300,2002,10);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (45,4422,90,200,380,300,520,2002,11);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (46,3735,30,50,290,200,150,2002,12);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (47,3956,150,370,720,300,335,2002,13);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (48,4235,430,300,650,152,380,2002,14);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (49,1997,339,630,170,120,400,2002,15);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (50,2189,80,140,930,130,57,2002,16);
+INSERT INTO economy (id_economy,  VVP, Cost_of_army, Cost_of_education, Cost_of_medicine, Price_export, Price_import,year,country_id_country) VALUES (51,12000,315,70,135,350,450,2002,17);
+
+select*from capital_in_time_zone
+
+
+INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (1, 1, 13);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (2, 1, 12);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (3, 1, 14);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (4, 1, 15);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (5, 1, 17);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (6, 1, 6);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (7, 1, 3);
+	
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (8, 2, 9);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (9, 2, 13);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (10, 2, 1);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (11, 2, 7);
+	
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (12, 3, 2);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (13, 3, 16);
+	
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (14, 4, 7);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (15, 4, 6);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (16, 4, 2);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (17, 4, 11);
+	INSERT INTO public.country_has_ocean(
+	id_ocea, ocean_id_ocean, country_id_country)
+	VALUES (18, 4, 16);

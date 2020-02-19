@@ -1,0 +1,125 @@
+CREATE TABLE action_map(
+    operation         varchar(50)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    empname           text      NOT NULL,
+    salary integer
+);
+CREATE TRIGGER log_update
+    AFTER UPDATE ON accounts
+    FOR EACH ROW
+    WHEN (OLD.* IS DISTINCT FROM NEW.*)
+    EXECUTE PROCEDURE log_account_update();
+	
+CREATE OR REPLACE FUNCTION process_country() RETURNS TRIGGER AS $t_country$
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO action_map SELECT 'DELETE', now(),array_to_string(array_accum(OLD.*),',');
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+			INSERT INTO action_map SELECT 'Старі дані-(відбулося оновлення)', now(),array_to_string(array_accum(OLD.*),',');
+            INSERT INTO action_map SELECT 'UPDATE', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO action_map SELECT 'INSERT', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        END IF;
+        RETURN NULL; 
+    END;
+$t_country$ LANGUAGE plpgsql;
+
+update country set area=2766826 where id_country=17
+select*from action_map
+
+drop trigger t_country on country
+drop function process_country
+
+CREATE TRIGGER t_country
+AFTER INSERT OR UPDATE OR DELETE ON country
+    FOR EACH ROW EXECUTE PROCEDURE process_country();
+    END;
+$t_country$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION process_capital() RETURNS TRIGGER AS $t_capital$
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO action_map SELECT 'DELETE', now(),array_to_string(array_accum(OLD.*),',');
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+			INSERT INTO action_map SELECT 'Старі дані-(відбулося оновлення)', now(),array_to_string(array_accum(OLD.*),',');
+            INSERT INTO action_map SELECT 'UPDATE', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO action_map SELECT 'INSERT', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        END IF;
+        RETURN NULL; 
+    END;
+$t_capital$ LANGUAGE plpgsql;
+
+CREATE TRIGGER t_capital
+AFTER INSERT OR UPDATE OR DELETE ON capital
+    FOR EACH ROW EXECUTE PROCEDURE process_capital();
+    END;
+$t_capital$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION process_union() RETURNS TRIGGER AS $t_union$
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO action_map SELECT 'DELETE', now(),array_to_string(array_accum(OLD.*),',');
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+			INSERT INTO action_map SELECT 'Старі дані-(відбулося оновлення)', now(),array_to_string(array_accum(OLD.*),',');
+            INSERT INTO action_map SELECT 'UPDATE', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO action_map SELECT 'INSERT', now(),array_to_string(array_accum(NEW.*),',');
+			
+            RETURN NEW;
+        END IF;
+        RETURN NULL; 
+    END;
+$t_union$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER t_union
+AFTER INSERT OR UPDATE OR DELETE ON union_n
+
+
+
+
+
+CREATE OR REPLACE FUNCTION valid_time_capital()
+  RETURNS trigger AS  $valid_trigger_time_capital$
+  declare count_time int;
+BEGIN
+count_time:=(select count(time_zone_id_zone)
+	from capital_in_time_zone where  NEW.capital_id_capital=capital_id_capital
+	group by capital_id_capital
+ having count(time_zone_id_zone)=1);
+                            if (count_time =1)
+ then RAISE EXCEPTION 'Столиця не може мати дві часові зони';       
+ END IF;
+ RETURN NEW;
+END;
+ $valid_trigger_time_capital$
+LANGUAGE plpgsql;
+
+
+CREATE TRIGGER valid_trigger_time_capital BEFORE insert ON capital_in_time_zone  
+FOR EACH ROW EXECUTE PROCEDURE valid_time_capital();  
+drop trigger valid_trigger_time_capital on capital_in_time_zone;
+
+DROP FUNCTION  valid_time_capital;
+
+
+    FOR EACH ROW EXECUTE PROCEDURE process_union();
+    END;
+$t_union$ LANGUAGE plpgsql;

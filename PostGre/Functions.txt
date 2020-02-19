@@ -1,0 +1,201 @@
+CREATE OR REPLACE FUNCTION vvp_reg (reg_name varchar(100)) RETURNS varchar(200) AS
+$$  DECLARE QQQ varchar(200);
+BEGIN
+if reg_name in (select name_region from regions) then	
+select sum(vvp)/count(regions_id_regions) as AVG into QQQ
+FROM
+    economy
+        JOIN
+    country ON id_country = economy.country_id_country
+        JOIN
+    regions on id_regions=regions_id_regions 
+where name_region=reg_name
+group by name_region;
+else 
+select 'Немає такого регіону у базі' into QQQ;
+end if;
+    RETURN QQQ;
+END 
+$$ LANGUAGE 'plpgsql';		
+
+Select  name_region as "Регіон",
+    array_to_string(array_accum(DISTINCT(name_country)),',') AS "Країни",
+    economy.year AS "Рік",
+    Concat(vvp_reg (name_region),'$') as " Середні зарплати в регіонах"
+FROM
+    economy
+        JOIN
+    country ON id_country = economy.country_id_country
+        JOIN
+    regions on id_regions=regions_id_regions 
+WHERE
+    economy.year = '2001' 
+group by name_region,year
+																   
+											   
+											   
+CREATE OR REPLACE FUNCTION Language_information (Languag_e varchar(100)) RETURNS varchar(200) AS
+$$  DECLARE QQQ varchar(200);
+BEGIN
+if Languag_e in (select name_lang from language) then														   
+SELECT 
+    CONCAT(language.name_lang,
+            ' офіційна у  ',
+            language.official,
+            ' країнах світу. Код мови - ',
+            language.language_cod)  into QQQ
+FROM
+    language_in_country
+        JOIN
+    language ON language.id_lang = language_in_country.language_id_lang
+WHERE
+    language.name_lang =  Languag_e;
+else 
+select 'Немає такої мови у базі даних' into QQQ;
+end if;
+    RETURN QQQ;
+END 
+$$ LANGUAGE 'plpgsql';
+																   
+Select Language_information ('Англійська мова') as "Світові мови" 
+				
+																   
+																   
+CREATE OR REPLACE FUNCTION k_ocean (ocean_n varchar(100)) RETURNS varchar(100) AS
+$$  DECLARE QQQ varchar(100);
+BEGIN
+if ocean_n in (select name_ocean from ocean) then	
+select count(country_has_ocean.country_id_country) into QQQ
+from ocean inner join country_has_ocean on id_ocean=ocean_id_ocean
+where name_ocean=ocean_n;
+else 
+select 'Немає такого океану у базі' into QQQ;
+end if;
+    RETURN QQQ;
+END 
+$$ LANGUAGE 'plpgsql';	
+				drop function k_ocean									 
+Select  Concat('До ',name_ocean,' мають доступ ',k_ocean (name_ocean),' країн' )as "Кількість країн,які мають вихід до Океану"
+FROM ocean
+												 
+													 
+													 
+													 
+																   
+CREATE TYPE vvp_avg_region AS ( name_region varchar(300)); 				   
+CREATE OR REPLACE FUNCTION vvp_avg_region (name_region varchar(100) ) 
+RETURNS vvp_avg_region AS $$ 
+SELECT CONCAT(' Регіон - ',name_region,
+            ';  Країни: - ',array_to_string(array_accum(DISTINCT(name_country)),','),
+            '; Середня заробітна плата -',sum(vvp)::float/count(country_id_country) ) 
+FROM
+    economy
+        JOIN
+    country ON id_country = economy.country_id_country
+        JOIN
+    regions on id_regions=regions_id_regions   
+ WHERE   regions.name_region = $1 
+group by name_region
+$$ LANGUAGE SQL; 
+											
+
+select vvp_avg_region('Південна Америка') as AVG_VVP;
+											
+											
+											
+CREATE OR REPLACE FUNCTION Army (Countr_y varchar(50),yea_r int) RETURNS varchar(50) as
+$$ DECLARE QQQ varchar(50) default null;
+BEGIN
+if yea_r in (select distinct(year) from economy) then
+SELECT 
+    CASE
+        WHEN
+            economy.cost_of_army = (SELECT 
+                    MAX(cost_of_army)
+                FROM
+                    economy
+                WHERE
+                    year = yea_r
+                GROUP BY country
+                ORDER BY MAX(cost_of_army) DESC
+                LIMIT 1) 
+        THEN
+            cast_rank_to_text(5)
+        WHEN
+            economy.cost_of_army < (SELECT 
+                    MAX(cost_of_army)
+                FROM
+                    economy
+                WHERE
+                    year = yea_r
+                GROUP BY country
+                ORDER BY MAX(cost_of_army) DESC
+                LIMIT 1)
+                AND economy.cost_of_army >= (SELECT 
+                    AVG(cost_of_army)
+                FROM
+                    economy
+                WHERE
+                    year = yea_r) 
+        THEN
+            cast_rank_to_text(4)
+        WHEN
+            economy.cost_of_army < (SELECT 
+                    AVG(cost_of_army) 
+                FROM
+                    economy
+                WHERE
+                    year = yea_r)
+        THEN
+            cast_rank_to_text(2)
+    END
+INTO QQQ FROM
+    economy
+        JOIN
+    country ON country.id_country = economy.country_id_country
+WHERE
+    country.name_country = countr_y
+        AND economy.year = yea_r;
+else 
+SELECT 'Немає інформації про армію по данному році' INTO QQQ;
+end if;
+return QQQ;
+END  
+$$ LANGUAGE 'plpgsql';
+	
+SELECT 
+    country.name_country AS "Країна",
+    economy.year AS "Рік",
+    Army(country.name_country, economy.year) AS "Коментар про армію"
+FROM
+    economy
+        JOIN
+    country ON country.id_country = economy.country_id_country
+WHERE
+    economy.year = '2001'
+											
+											
+CREATE OR REPLACE FUNCTION Bigest_country_in_organization (NAME_1 varchar(80)) RETURNS varchar(50) AS $$
+DECLARE
+    QQQ  varchar(50);
+BEGIN
+if NAME_1 in(select name_union from union_n) then
+  SELECT 
+    name_country
+INTO QQQ FROM country inner join country_in_organization on id_country=country_id_country
+inner join union_n on union_id=union_n_union_id
+WHERE
+    name_union = NAME_1 AND
+	country_in_organization.Date_of_release is NULL
+GROUP BY name_union , name_country
+ORDER BY MAX(country.area) DESC
+LIMIT 1;
+end if;
+    RETURN QQQ;
+END
+$$ LANGUAGE 'plpgsql';
+																		  
+																		  
+select distinct(name_union) as "Організаця",Bigest_country_in_organization(name_union) as "Найбільша країна у союзі"
+FROM country inner join country_in_organization on id_country=country_id_country
+inner join union_n on union_id=union_n_union_id
